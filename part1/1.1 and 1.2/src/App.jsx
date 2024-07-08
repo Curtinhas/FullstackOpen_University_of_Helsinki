@@ -35,7 +35,9 @@ const Header = (props) => {
 const Parts = (props) => {
   return (
     <>
-      <p>{props.parts}</p>
+      <p>
+        {props.parts} {props.exercises}
+      </p>
     </>
   );
 };
