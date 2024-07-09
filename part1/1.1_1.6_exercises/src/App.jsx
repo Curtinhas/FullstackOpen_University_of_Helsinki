@@ -28,17 +28,15 @@ const App = () => {
 };
 
 const Header = (props) => {
-  // eslint-disable-next-line react/prop-types
+  console.log(props);
   return <h1>{props.course}</h1>;
 };
 
 const Parts = (props) => {
   return (
-    <>
-      <p>
-        {props.parts} {props.exercises}
-      </p>
-    </>
+    <p>
+      {props.parts} {props.exercises}
+    </p>
   );
 };
 
