@@ -16,48 +16,75 @@ function App() {
 
     const updateTotal = total + 1;
     setAverage((updateGood - bad) / updateTotal);
+
+    setPercentage((updateGood / updateTotal) * 100 + "%");
   };
 
   const handleNeutral = () => {
     setNeutral((prev) => prev + 1);
+
+    const updateNeutral = neutral + 1;
+    setTotal(good + bad + updateNeutral);
+
+    const updateTotal = total + 1;
+    setPercentage((good / updateTotal) * 100 + "%");
   };
+
   const handleBad = () => {
     setBad((prev) => prev + 1);
+
+    const updateBad = bad + 1;
+    setTotal(good + neutral + updateBad);
+
+    const updateTotal = total + 1;
+    setAverage((good - updateBad) / updateTotal);
+
+    setPercentage((good / updateTotal) * 100 + "%");
   };
 
   return (
     <div>
-      <h1>Give feedback</h1>
-      <Buttons
-        handleGood={handleGood}
-        handleBad={handleBad}
-        handleNeutral={handleNeutral}
-      />
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <Heading text={"give feedback"} />
+      <Buttons handleClick={handleGood} text={"good"} />
+      <Buttons handleClick={handleNeutral} text={"neutral"} />
+      <Buttons handleClick={handleBad} text={"bad"} />
+      <Heading text="statistics" />
+
+      <Statistics count={[good, neutral, bad, total, average, percentage]} />
     </div>
   );
 }
 
-const Buttons = ({ handleGood, handleNeutral, handleBad }) => {
+const Heading = ({ text }) => {
+  return <h1>{text}</h1>;
+};
+
+const Buttons = ({ handleClick, text }) => {
+  return <button onClick={handleClick}>{text}</button>;
+};
+
+const StatisticsLine = ({ name, value }) => {
   return (
-    <>
-      <button onClick={handleGood}>good</button>
-      <button onClick={handleNeutral}>neutral</button>
-      <button onClick={handleBad}>bad</button>
-    </>
+    <tr>
+      <td>{name}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
-const Statistics = ({ good, neutral, bad, total, all }) => {
-  return (
-    <>
-      <h1>Statistics</h1>
-      <h4>Good: {good}</h4>
-      <h4>neutral: {neutral} </h4>
-      <h4>bad: {bad}</h4>
-      <h4>total: {all}</h4>
-    </>
-  );
+const Statistics = ({ count }) => {
+  if (count[0] || count[1] || count[3] > 0) {
+    return (
+      <div>
+        <StatisticsLine name="good" value={count[0]} />
+        <StatisticsLine name="neutral" value={count[1]} />
+        <StatisticsLine name="bad" value={count[2]} />
+        <StatisticsLine name="all" value={count[3]} />
+        <StatisticsLine name="average" value={count[4]} />
+        <StatisticsLine name="positive" value={count[5]} />
+      </div>
+    );
+  }
+  return <p>No feedback given</p>;
 };
-
 export default App;
